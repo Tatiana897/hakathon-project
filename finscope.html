@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BakeryPulse – Sales Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f0f4f8;
+        --panel: rgba(255, 255, 255, 0.6);
+        --accent-gradient: linear-gradient(90deg, #ff7e5f, #feb47b);
+        --border: rgba(255, 255, 255, 0.2);
+        --text-primary: #1e293b;
+        --text-muted: #64748b;
+        --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        --success: #16a34a;
+        --danger: #dc2626;
+        --blur: blur(20px);
+      }
+      * { box-sizing: border-box; margin:0; padding:0; font-family:"Space Grotesk", sans-serif; }
+      body { display:grid; grid-template-columns:270px 1fr; min-height:100vh; background:var(--bg); color:var(--text-primary); }
+      aside { background:var(--panel); padding:2rem; border-right:1px solid var(--border); display:flex; flex-direction:column; gap:3rem; box-shadow:var(--shadow); position:relative; z-index:1; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+      h1.logo{font-size:1.7rem;font-weight:600;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+      .vertical-text{position:absolute;top:50%;right:-3.4rem;transform:rotate(90deg) translateY(-50%);transform-origin:left;font-size:0.75rem;color:var(--text-muted);opacity:0.6;letter-spacing:0.3em;}
+      nav a{display:block;padding:1rem 1.2rem;border-radius:0.8rem;text-decoration:none;color:var(--text-muted);font-size:1rem;font-weight:500;transition:all 0.3s;position:relative;}
+      nav a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);height:60%;width:4px;background:transparent;border-radius:2px;transition:background 0.3s;}
+      nav a.active,nav a:hover{background:#e5e7eb;color:var(--text-primary);}nav a.active::before{background:#ff7e5f;}
+      main{padding:4rem 5rem;overflow-y:auto;background:linear-gradient(to right top,#f9fafb,#e3edf5);position:relative;}
+      section{display:none;animation:fade 0.4s ease-out;}section.active{display:block;}
+      @keyframes fade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+      .card{background:var(--panel);border-radius:2rem;padding:2.2rem 2rem;box-shadow:var(--shadow);border:1px solid var(--border);transition:transform 0.3s,box-shadow 0.3s;backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);}
+      .card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(0,0,0,0.08);} 
+      .card.kpi{border:1px solid var(--border);} 
+      .sparkline{width:100%;height:40px;margin-top:1.4rem;background:repeating-linear-gradient(to right,#cbd5e1 0 6px,transparent 6px 12px);border-radius:6px;}
+      .grid{display:grid;gap:3rem;} .grid.dashboard{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+      .heading{font-size:2.1rem;font-weight:600;margin-bottom:2.2rem;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+      .kpi-header{display:flex;justify-content:space-between;align-items:center;} .kpi-title{font-size:1rem;font-weight:500;color:var(--text-muted);} .kpi-value{font-size:1.8rem;font-weight:600;}
+      .kpi-trend{font-size:0.9rem;margin-top:.8rem;display:inline-block;} .up{color:var(--success);} .down{color:var(--danger);} 
+      .data-story{font-size:1rem;color:var(--text-primary);margin-bottom:1.8rem;font-weight:500;}
+      .profile-link { margin-top: auto; padding: 1rem 1.2rem; font-size: 0.95rem; color: var(--text-muted); text-decoration: none; display: block; transition: color 0.3s ease; }
+      .profile-link:hover { color: var(--text-primary); }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1 class="logo">BakeryPulse</h1>
+      <span class="vertical-text">SALES</span>
+      <nav>
+        <a href="#dashboard" class="active" data-target="dashboard">🍞 Bakery Overview</a>
+        <a href="#forecast" data-target="forecast">📈 Sales Forecast</a>
+        <a href="#expenses" data-target="expenses">💸 Ingredient Cost Trends</a>
+        <a href="#insights" data-target="insights">🧠 Smart Suggestions</a>
+      </nav>
+      <a href="#profile" class="profile-link">👤 Profile</a>
+    </aside>
+
+    <main>
+      <!-- Dashboard -->
+      <section id="dashboard" class="active">
+        <h2 class="heading">Overview Dashboard</h2>
+        <p class="data-story">🚀 Revenue has grown <strong>8.4%</strong> month‑over‑month.</p>
+        <div class="grid dashboard">
+          <div class="card kpi">
+            <div class="kpi-header"><span class="kpi-title">Total Revenue</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend up">+5.6% vs last month</span>
+          </div>
+          <div class="card kpi">
+            <div class="kpi-header"><span class="kpi-title">Total Expenses</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend down">+7.2% vs last month</span>
+          </div>
+          <div class="card kpi">
+            <div class="kpi-header"><span class="kpi-title">Net Profit</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend up">+3.1% vs last month</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Revenue Forecast -->
+      <section id="forecast">
+        <h2 class="heading">Revenue Forecast</h2>
+        <p class="data-story">📈 Expected revenue next month is projected to rise by <strong>6%</strong>.</p>
+        <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Chart placeholder]</span>
+        </div>
+      </section>
+
+      <!-- Expense Trends -->
+      <section id="expenses">
+        <h2 class="heading">Expense Trends</h2>
+        <p class="data-story">💡 Supplies expenses increased <strong>12%</strong> last quarter.</p>
+        <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Trend chart placeholder]</span>
+        </div>
+      </section>
+
+      <!-- AI Insights -->
+      <section id="insights">
+        <h2 class="heading">AI Insights & Recommendations</h2>
+        <div class="grid" style="grid-template-columns:1fr;">
+          <div class="card">💡 Offer a 10% discount on slow‑moving items to boost turnover.</div>
+          <div class="card">⚠️ High dependency on one supplier – consider diversification.</div>
+          <div class="card">🚀 Social media ads resulted in 20% higher conversion – reinvest.</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const links=document.querySelectorAll('nav a');
+      const sections=document.querySelectorAll('main section');
+      function setActive(id){links.forEach(l=>l.classList.toggle('active',l.dataset.target===id));sections.forEach(s=>s.classList.toggle('active',s.id===id));}
+      links.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();const id=l.dataset.target;history.pushState(null,'',`#${id}`);setActive(id);}));
+      window.addEventListener('popstate',()=>{const id=location.hash.replace('#','')||'dashboard';setActive(id);});
+      setActive(location.hash.replace('#','')||'dashboard');
+    </script>
+  </body>
+</html>
