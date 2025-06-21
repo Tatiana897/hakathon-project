@@ -27,8 +27,21 @@ def registration():
 	if request.method == "GET":
 		return render_template("registration.html")
 	elif request.method == "POST":
-		
+		pass
 	else:
 		return 'bad request!', 400
+
+@app.route("/login", methods = ['POST', 'GET'])
+def login():
+   if request.method == "GET":
+      return render_template("login.html")
+   elif request.method == "POST":
+      result = request.form.items()
+      for key,value in result:
+         print(key,value)
+      return render_template("login.html")
+   else:
+      return 'bad request!', 400
+
 if __name__ == '__main__':
    app.run()
