@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BakeryPulse – Sales Analytics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet" />
+    <title>BakeryPulse – Аналитика Продаж</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: #f0f4f8;
@@ -18,7 +18,7 @@
         --danger: #dc2626;
         --blur: blur(20px);
       }
-      * { box-sizing: border-box; margin:0; padding:0; font-family:"Space Grotesk", sans-serif; }
+      * { box-sizing: border-box; margin:0; padding:0; font-family:"Manrope", sans-serif; }
       body { display:grid; grid-template-columns:270px 1fr; min-height:100vh; background:var(--bg); color:var(--text-primary); }
       aside { background:var(--panel); padding:2rem; border-right:1px solid var(--border); display:flex; flex-direction:column; gap:3rem; box-shadow:var(--shadow); position:relative; z-index:1; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
       h1.logo{font-size:1.7rem;font-weight:600;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
@@ -64,25 +64,29 @@
       }
       .profile-link img { width: 18px; height: 18px; flex-shrink: 0; }
       .profile-link:hover { color: var(--text-primary); }
+      .profile-container { display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; }
+      .profile-icon { width: 80px; height: 80px; }
+      .profile-info { font-size: 1.2rem; line-height: 1.6; }
+      .upload-form input[type="text"] { margin-top: 1.5rem; padding: 0.8rem 1rem; font-size: 1rem; border: 1px solid var(--border); border-radius: 0.8rem; width: 100%; max-width: 500px; }
+      .upload-form button { margin-top: 1.5rem; padding: 0.8rem 1.6rem; font-size: 1rem; border: none; border-radius: 0.8rem; background: var(--accent-gradient); color: white; cursor: pointer; }
+  
     </style>
   </head>
   <body>
     <aside>
       <h1 class="logo">BakeryPulse</h1>
-      <span class="vertical-text">SALES</span>
+      <span class="vertical-text">ПРОДАЖИ</span>
       <nav>
-        <a href="#home"      class="active" data-target="home">
-            <img src="../assets/house.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon">
-            Home
+        <a href="#dashboard" data-target="dashboard">
+          <img src="../assets/bag.svg" alt="Иконка">Обзор Пекарни
         </a>
-        <a href="#dashboard"                data-target="dashboard">
-            <img src="../assets/bag.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon">
-            Bakery Overview
+        <a href="#forecast" data-target="forecast">
+          <img src="../assets/graph-up-arrow.svg" alt="Иконка">Прогноз Продаж
         </a>
-        <a href="#forecast"                 data-target="forecast">
-            <img src="../assets/graph-up-arrow.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon">
-            Sales Forecast
+        <a href="#expenses" data-target="expenses">
+          <img src="../assets/wallet.svg" alt="Иконка">Тренды Себестоимости
         </a>
+<<<<<<< HEAD
         <a href="#expenses"                 data-target="expenses">
             <img src="/assets/wallet.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon"> 
             Ingredient Cost Trends
@@ -90,93 +94,93 @@
         <a href="#insights"                 data-target="insights">
             <img src="../assets/lightbulb.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon">
             Smart Suggestions
+=======
+        <a href="#insights" data-target="insights">
+          <img src="../assets/lightbulb.svg" alt="Иконка">Рекомендации ИИ
+>>>>>>> 6f77371651b54a44a1aaedf31f29f7f4a1ca0d74
         </a>
       </nav>
       <a href="#profile" class="profile-link">
-        <img src="../assets/person.svg" width="18" height="18" style="margin-right:8px;" alt="Overview Icon">
-        Profile</a>
+        <img src="../assets/person.svg" alt="Иконка">Профиль
+      </a>
     </aside>
 
     <main>
-        <!-- Home -->
-      <section id="home" class="active">
-        <h2 class="heading">Welcome to BakeryPulse</h2>
-        <div class="card" style="max-width:800px;margin:auto;">
-          <p style="font-size:1.05rem;line-height:1.6;">
-            <strong>BakeryPulse</strong> — это современный веб-сервис,
-            который помогает пекарням анализировать продажи, прогнозировать спрос и
-            оптимизировать расходы на ингредиенты. Используя методы машинного
-            обучения, мы превращаем ваши данные в понятные инсайты и рекомендации,
-            чтобы вы могли выпускать именно ту продукцию, которая приносит большую прибыль
-            и радость клиентам.
-          </p>
-          <ul style="margin:1.5rem 0 0 1.2rem; color:var(--text-muted);">
-            <li>🚀 Мгновенный обзор ключевых метрик</li>
-            <li>📊 Прогноз спроса по дням недели и праздникам</li>
-            <li>💸 Мониторинг цен на ингредиенты и себестоимости</li>
-            <li>🧠 Персональные советы по акциям и ассортименту</li>
-          </ul>
-        </div>
-      </section>
-
       <!-- Dashboard -->
       <section id="dashboard" class="active">
-        <h2 class="heading">Overview Dashboard</h2>
-        <p class="data-story">🚀 Revenue has grown <strong>8.4%</strong> month‑over‑month.</p>
+        <h2 class="heading">Обзорный Дашборд</h2>
+        <p class="data-story">🚀 Выручка выросла на <strong>8.4%</strong> по сравнению с прошлым месяцем.</p>
         <div class="grid dashboard">
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Total Revenue</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend up">+5.6% vs last month</span>
+            <div class="kpi-header"><span class="kpi-title">Общая Выручка</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend up">+5.6% от прошлого месяца</span>
           </div>
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Total Expenses</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend down">+7.2% vs last month</span>
+            <div class="kpi-header"><span class="kpi-title">Общие Расходы</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend down">+7.2% от прошлого месяца</span>
           </div>
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Net Profit</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend up">+3.1% vs last month</span>
+            <div class="kpi-header"><span class="kpi-title">Чистая Прибыль</span><span class="kpi-value">€ — —</span></div>
+            <div class="sparkline"></div><span class="kpi-trend up">+3.1% от прошлого месяца</span>
           </div>
         </div>
       </section>
 
       <!-- Revenue Forecast -->
       <section id="forecast">
-        <h2 class="heading">Revenue Forecast</h2>
-        <p class="data-story">📈 Expected revenue next month is projected to rise by <strong>6%</strong>.</p>
+        <h2 class="heading">Прогноз Дохода</h2>
+        <p class="data-story">📈 Ожидаемый рост дохода в следующем месяце составит <strong>6%</strong>.</p>
         <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
-          <span class="text-muted">[Chart placeholder]</span>
+          <span class="text-muted">[Здесь будет график]</span>
         </div>
       </section>
 
       <!-- Expense Trends -->
       <section id="expenses">
-        <h2 class="heading">Expense Trends</h2>
-        <p class="data-story">💡 Supplies expenses increased <strong>12%</strong> last quarter.</p>
+        <h2 class="heading">Тренды Расходов</h2>
+        <p class="data-story">💡 Расходы на поставки увеличились на <strong>12%</strong> за последний квартал.</p>
         <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
-          <span class="text-muted">[Trend chart placeholder]</span>
+          <span class="text-muted">[Здесь будет график]</span>
         </div>
       </section>
 
       <!-- AI Insights -->
       <section id="insights">
-        <h2 class="heading">AI Insights & Recommendations</h2>
+        <h2 class="heading">Рекомендации от ИИ</h2>
         <div class="grid" style="grid-template-columns:1fr;">
-          <div class="card">💡 Offer a 10% discount on slow‑moving items to boost turnover.</div>
-          <div class="card">⚠️ High dependency on one supplier – consider diversification.</div>
-          <div class="card">🚀 Social media ads resulted in 20% higher conversion – reinvest.</div>
+          <div class="card">💡 Предложите скидку 10% на товары с низким спросом для увеличения оборота.</div>
+          <div class="card">⚠️ Высокая зависимость от одного поставщика – рассмотрите диверсификацию.</div>
+          <div class="card">🚀 Реклама в соцсетях привела к росту конверсии на 20% – стоит повторить.</div>
         </div>
+      </section>
+
+ <section id="profile" class="active">
+        <h2 class="heading">Профиль Пользователя</h2>
+        <div class="profile-container">
+          <img src="../assets/person.svg" alt="Пользователь" class="profile-icon">
+          <div class="profile-info">
+            <div><strong>Имя:</strong> Анна Смирнова</div>
+            <div><strong>Email:</strong> anna.smirnova@example.com</div>
+          </div>
+        </div>
+        <form class="upload-form">
+          <label for="dataset-url">Вставьте ссылку на датасет или Excel-файл:</label><br>
+          <input type="text" id="dataset-url" name="dataset-url" placeholder="https://example.com/dataset.xlsx">
+          <br>
+          <button type="submit">Загрузить</button>
+        </form>
       </section>
     </main>
 
     <script>
         const links = document.querySelectorAll('nav a');
         const sections = document.querySelectorAll('main section');
-  
+
         function setActive(id) {
           links.forEach(l => l.classList.toggle('active', l.dataset.target === id));
           sections.forEach(s => s.classList.toggle('active', s.id === id));
         }
-  
+
         links.forEach(l => {
           l.addEventListener('click', e => {
             e.preventDefault();
@@ -185,13 +189,13 @@
             setActive(id);
           });
         });
-  
+
         window.addEventListener('popstate', () => {
-          const id = location.hash.replace('#', '') || 'home';
+          const id = location.hash.replace('#', '') || 'dashboard';
           setActive(id);
         });
-  
-        setActive(location.hash.replace('#', '') || 'home');
-      </script>
+
+        setActive(location.hash.replace('#', '') || 'dashboard');
+    </script>
   </body>
 </html>
