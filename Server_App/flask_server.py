@@ -52,7 +52,7 @@ def signup():
 
         session["user_id"] = user_id
         session["user_name"] = user_name
-        return redirect("/")
+        return render_template("finscope.html")
     else:
         return 'bad request!', 400
 
@@ -72,7 +72,7 @@ def login():
                 user_id = conn.cursor().lastrowid
                 conn.commit()
 
-        return render_template("login.html")
+        return render_template("finscope.html")
    else:
         return 'bad request!', 400
 
@@ -81,4 +81,4 @@ if __name__ == '__main__':
 
 
 
-    <img src="{{}}">
+    
