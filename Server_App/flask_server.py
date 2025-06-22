@@ -32,8 +32,8 @@ app.secret_key = os.urandom(24)
 
 
 @app.route('/')
-def hello_world():
-   return 'Hello World'
+def main():
+   return render_template("main.html")
 
 @app.route("/signup", methods = ['POST', 'GET'])
 def signup():
