@@ -1,59 +1,97 @@
 import pandas as pd
-from datetime import timedelta
+import matplotlib.pyplot as plt
+from textwrap import wrap
+from pathlib import Path
 
-sales_path = r"D:/Users/ASUS-X509J/Desktop/Coffee Shop Sales.xlsx"
-sales = pd.read_excel(sales_path, sheet_name="Transactions")
+def plot_time_bars(
+        sales_path: str | Path,
+        start_hour: int = 8,
+        end_hour: int = 22,
+        step_hours: int = 2,
+        title_top: str = "Самые востребованные продукты дня по времени",
+        title_low: str = "Наименее востребованные товары по времени суток",
+        save_dir: str | Path | None = None
+    ) -> None:
+   
+    df = pd.read_excel(sales_path, sheet_name="Transactions")
+    df["hour"]   = pd.to_datetime(df["transaction_time"].astype(str)).dt.hour
+    df["minute"] = pd.to_datetime(df["transaction_time"].astype(str)).dt.minute
+    df = df[(df["hour"] >= start_hour) & (df["hour"] < end_hour)]
 
-price_df = (sales.groupby("product_detail")["unit_price"]
-                 .median()
-                 .reset_index()
-                 .rename(columns={"unit_price": "current_price"}))
-price_df["cost_per_unit"] = (price_df["current_price"] * 0.6).round(2)
+    bins   = list(range(start_hour, end_hour + step_hours, step_hours))
+    labels = [f"{h:02d}-{h+step_hours:02d}" for h in bins[:-1]]
+    df["time_bin"] = pd.cut(df["hour"] + df["minute"]/60,
+                            bins=bins, labels=labels, right=False)
 
-sales["transaction_date"] = pd.to_datetime(sales["transaction_date"])
-cutoff = sales["transaction_date"].max() - timedelta(days=42)
-sales = sales[sales["transaction_date"] >= cutoff]
+    total_qty = (df.groupby("time_bin")["transaction_qty"]
+                   .sum()
+                   .reindex(labels)
+                   .fillna(0))
 
-grouped = (sales.groupby(["product_detail", "transaction_date"])["transaction_qty"]
-                .sum()
-                .reset_index())
+    agg = (df.groupby(["time_bin", "product_detail"])["transaction_qty"]
+             .sum()
+             .reset_index())
 
-total_qty = grouped.groupby("product_detail")["transaction_qty"].sum()
-products_ok = total_qty[total_qty >= 50].index
-grouped = grouped[grouped["product_detail"].isin(products_ok)]
+    top_df = (agg.sort_values(["time_bin", "transaction_qty"], ascending=[True, False])
+                  .drop_duplicates("time_bin")
+                  .set_index("time_bin")
+                  .reindex(labels)
+                  .reset_index())
 
-recommendations = []
+    least_df = (agg[agg["transaction_qty"] > 0]             
+                    .sort_values(["time_bin", "transaction_qty"])
+                    .drop_duplicates("time_bin")
+                    .set_index("time_bin")
+                    .reindex(labels)
+                    .reset_index())
+    least_df["transaction_qty"].fillna(0, inplace=True)
+    least_df["product_detail"].fillna("нет продаж", inplace=True)
 
-for prod, sub in grouped.groupby("product_detail"):
-    sub = sub.copy()
-    mean = sub["transaction_qty"].mean()
-    if mean == 0:
-        continue
+    plt.figure(figsize=(12, 6))
+    bars = plt.bar(total_qty.index, total_qty.values, color="#3366cc")
+    for bar, prod in zip(bars, top_df["product_detail"]):
+        wrapped = "\n".join(wrap(str(prod), 12))
+        h = bar.get_height()
+        y = h/2 if h >= 2000 else h + 500
+        va = "center" if h >= 2000 else "bottom"
+        color = "white" if h >= 2000 else "black"
+        plt.text(bar.get_x()+bar.get_width()/2, y, wrapped,
+                 ha="center", va=va, fontsize=9, fontweight="bold", color=color)
 
-    peak_row = sub.loc[sub["transaction_qty"].idxmax()]
-    low_row  = sub.loc[sub["transaction_qty"].idxmin()]
+    plt.title(title_top, fontweight="bold")
+    plt.xlabel("Интервал времени")
+    plt.ylabel("Количество проданных позиций")
+    plt.grid(axis="y", linestyle="--", alpha=0.5)
+    plt.tight_layout()
+    if save_dir:
+        Path(save_dir).mkdir(parents=True, exist_ok=True)
+        plt.savefig(Path(save_dir) / "top_products.png", dpi=300)
+    plt.show()
 
-    for row, label in [(peak_row, "raise"), (low_row, "discount")]:
-        ratio = (row["transaction_qty"] - mean) / mean
-        delta_pct = 0.05 * ratio
-        delta_pct = max(min(delta_pct, 0.20), -0.20)
-        if abs(delta_pct) < 0.03:
-            continue
+    plt.figure(figsize=(12, 6))
+    bars = plt.bar(least_df["time_bin"], least_df["transaction_qty"], color="#cc3333")
+    for bar, name, qty in zip(bars,
+                              least_df["product_detail"],
+                              least_df["transaction_qty"]):
+        wrapped = "\n".join(wrap(str(name), 14))
+        h = bar.get_height()
+        y = h/2 if h >= 3 else h + 0.2
+        va = "center" if h >= 3 else "bottom"
+        color = "white" if h >= 3 else "black"
+        plt.text(bar.get_x()+bar.get_width()/2, y, wrapped,
+                 ha="center", va=va, fontsize=8, fontweight="bold", color=color)
 
-        current_price = price_df[price_df["product_detail"] == prod]["current_price"].values[0]
-        cost = price_df[price_df["product_detail"] == prod]["cost_per_unit"].values[0]
-        new_price = round(max(current_price * (1 + delta_pct), cost * 1.2), 2)
+    plt.title(title_low, fontweight="bold")
+    plt.xlabel("Интервал времени")
+    plt.ylabel("Количество продаж товара-аутсайдера")
+    plt.grid(axis="y", linestyle="--", alpha=0.4)
+    plt.tight_layout()
+    if save_dir:
+        plt.savefig(Path(save_dir) / "least_products.png", dpi=300)
+    plt.show()
 
-        recommendations.append({
-            "product_detail": prod,
-            "transaction_date": row["transaction_date"].date(),
-            "current_price": round(current_price, 2),
-            "new_price": new_price,
-            "delta_pct": round(delta_pct * 100, 1),
-            "action_type": label
-        })
-
-recommend_df = pd.DataFrame(recommendations)
-recommend_df = recommend_df.sort_values(["product_detail", "transaction_date"])
-print(recommend_df.head(15))
-
+if __name__ == "__main__":
+    plot_time_bars(
+        sales_path=r"D:/Users/ASUS-X509J/Desktop/Coffee Shop Sales.xlsx",
+        save_dir=r"D:/Users/ASUS-X509J/Desktop/graphs"
+    )
