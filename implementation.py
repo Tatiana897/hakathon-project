@@ -57,4 +57,3 @@ recommend_df = pd.DataFrame(recommendations)
 recommend_df = recommend_df.sort_values(["product_detail", "transaction_date"])
 print(recommend_df.head(15))
 
-# recommend_df.to_csv("ai_price_suggestions.csv", index=False)
