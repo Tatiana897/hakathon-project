@@ -122,7 +122,7 @@ def company_info():
     else:
         company_data = GetTable.export_gsheet_to_excel("1-pI8FLZ1hBfAiKSc7NM847Hw9SyrRLG75FIcXIxYK9Q", username+".xlsx")
 
-    return render_template("finscope.html", profile_name = username)
+    return render_template("finscope.html", profile_name = username, profile_email = email)
 
 if __name__ == '__main__':
     app.run()

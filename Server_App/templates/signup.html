@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BakeryPulse – Sign Up</title>
+  <title>InsighGrid – Регистрация</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -55,7 +55,8 @@
     .signup-container button {
       width: 100%;
       padding: 0.9rem;
-      font-size: 1rem;
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.2rem;
       background: #feb47b;
       border: none;
       color: #fff;
@@ -79,23 +80,23 @@
 </head>
 <body>
   <div class="signup-container">
-    <h2>Create Your BakeryPulse Account</h2>
+    <h2>Станьте частью InsightGrid!</h2>
     <form action="/signup" method="POST">
       <div class="form-group">
-        <label for="name">Full Name</label>
+        <label for="name">Полное Имя</label>
         <input type="text" name="name" required>
       </div>
       <div class="form-group">
-        <label for="email">Email address</label>
+        <label for="email">Email</label>
         <input type="email" name="email" required>
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Пароль</label>
         <input type="password" name="password" required>
       </div>
-      <button type="submit">Sign Up</button>
+      <button type="submit">Зарегестриваться</button>
     </form>
-    <p class="switch">Already have an account? <a href="/login">Log In</a></p>
+    <p class="switch">Уже с нами? <a href="/login">Авторизироваться</a></p>
   </div>
 </body>
 </html>

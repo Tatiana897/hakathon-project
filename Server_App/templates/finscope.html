@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BakeryPulse – Аналитика Продаж</title>
+    <title>InsightGrid - Аналитика Продаж</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
     <style>
       :root {
@@ -66,29 +66,99 @@
       .profile-link:hover { color: var(--text-primary); }
       .profile-container { display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; }
       .profile-icon { width: 80px; height: 80px; }
-      .profile-info { font-size: 1.2rem; line-height: 1.6; }
-      .upload-form input[type="text"] { margin-top: 1.5rem; padding: 0.8rem 1rem; font-size: 1rem; border: 1px solid var(--border); border-radius: 0.8rem; width: 100%; max-width: 500px; }
-      .upload-form button { margin-top: 1.5rem; padding: 0.8rem 1.6rem; font-size: 1rem; border: none; border-radius: 0.8rem; background: var(--accent-gradient); color: white; cursor: pointer; }
-  
+      .profile-info { font-size: 1.5rem; line-height: 1.6; }
+      .upload-form input[type="text"] { margin-top: 1rem; padding: 0.8rem 1rem; font-size: 1.5rem; border: 1px solid var(--border); border-radius: 0.8rem; width: 100%; max-width: 500px; }
+      .upload-form button { margin-top: 1.5rem; padding: 0.8rem 1.6rem; font-size: 1.5rem; border: none; border-radius: 0.8rem; background: var(--accent-gradient); color: white; cursor: pointer; }
+      /* Стили для загрузки файла */
+.file-upload-wrapper {
+  margin-top: 1.5rem;
+  position: relative;
+}
+
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.8rem;
+  font-size: 1.5rem;
+  border-radius: 0.8rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.file-upload-label:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+.file-upload-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+}
+
+.file-upload-text {
+  font-weight: 500;
+}
+
+.file-upload-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-name {
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  padding: 0.4rem 0;
+}
+
+/* Стили для кнопки загрузки */
+.upload-button {
+  margin-top: 2rem;
+  padding: 1rem 2.4rem;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 0.8rem;
+  background: var(--accent-gradient);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(254, 180, 123, 0.3);
+}
+
     </style>
   </head>
   <body>
     <aside>
-      <h1 class="logo">BakeryPulse</h1>
+      <h1 class="logo">InsightGrid</h1>
       <span class="vertical-text">ПРОДАЖИ</span>
       <nav>
         <a href="#dashboard" data-target="dashboard">
-          <img src="../static/assets/bag.svg" alt="Иконка">Обзор Пекарни
+          <img src="/static/assets/bag.svg" alt="Иконка">Обзорная Панель
         </a>
         <a href="#forecast" data-target="forecast">
-          <img src="../static/assets/graph-up-arrow.svg" alt="Иконка">Прогноз Продаж
+          <img src="/static/assets/graph-up-arrow.svg" alt="Иконка">Аналитические Потребности
         </a>
         <a href="#expenses" data-target="expenses">
-          <img src="../static/assets/wallet.svg" alt="Иконка">Тренды Себестоимости
-        </a>
-        <a href="#insights" data-target="insights">
-          <img src="../static/assets/lightbulb.svg" alt="Иконка">Рекомендации ИИ
-
+          <img src="/static/assets/wallet.svg" alt="Иконка">Внедрение ИИ
         </a>
       </nav>
       <a href="#profile" class="profile-link">
@@ -100,45 +170,55 @@
     <main>
       <!-- Dashboard -->
       <section id="dashboard" class="active">
-        <h2 class="heading">Обзорный Дашборд</h2>
-        <p class="data-story">🚀 Выручка выросла на <strong>8.4%</strong> по сравнению с прошлым месяцем.</p>
+        <h2 class="heading">Обзорная Панель</h2>
+        <p class="data-story">🚀 Выручка выросла на <strong>{{percent}}%</strong> по сравнению с прошлым месяцем.</p>
+
         <div class="grid dashboard">
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Общая Выручка</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend up">+5.6% от прошлого месяца</span>
+            <img src={{plot1}} alt="plot1">
           </div>
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Общие Расходы</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend down">+7.2% от прошлого месяца</span>
+            <img src={{plot2}} alt="plot2">
           </div>
           <div class="card kpi">
-            <div class="kpi-header"><span class="kpi-title">Чистая Прибыль</span><span class="kpi-value">€ — —</span></div>
-            <div class="sparkline"></div><span class="kpi-trend up">+3.1% от прошлого месяца</span>
+            <img src={{plot3}} alt="plot3">
+          </div>
+          <div class="card kpi">
+            <img src={{plot4}} alt="plot4">
           </div>
         </div>
       </section>
 
       <!-- Revenue Forecast -->
       <section id="forecast">
-        <h2 class="heading">Прогноз Дохода</h2>
+        <h2 class="heading">Аналитические Потребности</h2>
         <p class="data-story">📈 Ожидаемый рост дохода в следующем месяце составит <strong>6%</strong>.</p>
-        <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
-          <span class="text-muted">[Здесь будет график]</span>
+        <div class="card" style="height:200px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Здесь будет text]</span>
+        </div>
+        <div class="card" style="height:200px;margin-top:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Здесь будет text]</span>
+        </div>
+        <div class="card" style="height:200px;margin-top:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Здесь будет text]</span>
         </div>
       </section>
 
       <!-- Expense Trends -->
       <section id="expenses">
-        <h2 class="heading">Тренды Расходов</h2>
+        <h2 class="heading">Внедрение ИИ</h2>
         <p class="data-story">💡 Расходы на поставки увеличились на <strong>12%</strong> за последний квартал.</p>
-        <div class="card" style="height:300px;display:flex;align-items:center;justify-content:center;">
-          <span class="text-muted">[Здесь будет график]</span>
+        <div class="card" style="height:200px;margin-top:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Здесь будет текст]</span>
+        </div>
+        <div class="card" style="height:200px;margin-top:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;">
+          <span class="text-muted">[Здесь будет текст]</span>
         </div>
       </section>
 
       <!-- AI Insights -->
       <section id="insights">
-        <h2 class="heading">Рекомендации от ИИ</h2>
+        <h2 class="heading">Рекомендации по Новинкам</h2>
         <div class="grid" style="grid-template-columns:1fr;">
           <div class="card">💡 Предложите скидку 10% на товары с низким спросом для увеличения оборота.</div>
           <div class="card">⚠️ Высокая зависимость от одного поставщика – рассмотрите диверсификацию.</div>
@@ -147,21 +227,48 @@
       </section>
 
  <section id="profile" class="active">
-        <h2 class="heading">Профиль Пользователя</h2>
-        <div class="profile-container">
-          <img src="../assets/person.svg" alt="Пользователь" class="profile-icon">
-          <div class="profile-info">
-            <div><strong>Имя:</strong> Анна Смирнова</div>
-            <div><strong>Email:</strong> anna.smirnova@example.com</div>
-          </div>
-        </div>
-        <form class="upload-form">
-          <label for="dataset-url">Вставьте ссылку на датасет или Excel-файл:</label><br>
-          <input type="text" id="dataset-url" name="dataset-url" placeholder="https://example.com/dataset.xlsx">
-          <br>
-          <button type="submit">Загрузить</button>
-        </form>
-      </section>
+  <h2 class="heading">Профиль Пользователя</h2>
+  <div class="profile-container">
+    <img src="/static/assets/person.svg" alt="Пользователь" class="profile-icon">
+    <div class="profile-info">
+      <div><strong>Имя:</strong> {{profile_name}}</div>
+      <div><strong>Email:</strong>{{profile_email}}</div>
+    </div>
+  </div>
+  <form class="upload-form" enctype="multipart/form-data" method="POST">
+    <!-- Кнопка для загрузки JSON файла -->
+    <div class="file-upload-wrapper">
+      <label for="json-upload" class="file-upload-label">
+        <span class="file-upload-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 18V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="file-upload-text">Выберите JSON-файл</span>
+      </label>
+      <input type="file" id="json-upload" name="json-upload" accept=".json" class="file-upload-input">
+      <div class="file-name" id="file-name">Файл не выбран</div>
+    </div>
+
+    <!-- Существующее поле для ссылки -->
+    <label for="dataset-url" style="margin-top: 2rem;">Вставьте ссылку на датасет или Excel-файл:</label>
+    <input type="text" id="dataset-url" name="dataset-url" placeholder="https://example.com/dataset.xlsx">
+    
+    <button type="submit" class="upload-button">
+      <span>Загрузить данные</span>
+    </button>
+  </form>
+  <script>
+  document.getElementById('json-upload').addEventListener('change', function(e) {
+    const fileName = e.target.files[0] ? e.target.files[0].name : 'Файл не выбран';
+    document.getElementById('file-name').textContent = fileName;
+  });
+</script>
+</section>
+
     </main>
 
     <script>
