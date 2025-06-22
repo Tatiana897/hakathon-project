@@ -5,6 +5,7 @@ from contextlib import closing
 from random import randint
 import os
 
+
 # Подключение к базе данных SQLite для хранения пользователей
 conn = sqlite3.connect('bot_users.db')
 cursor = conn.cursor()
@@ -20,6 +21,8 @@ cursor.execute('''
         language TEXT DEFAULT 'ru'
     );
 ''')
+
+
 conn.commit()
 
 
@@ -43,38 +46,77 @@ def signup():
 
         with closing(sqlite3.connect('bot_users.db')) as conn:
             with conn:
-                conn.execute('''
+                cursor = conn.cursor()
+                cursor.execute('''
                     INSERT INTO users (username,email, password_hash)
                     VALUES (?, ?, ?)
                     ''', (user_name, user_email, user_password))
-                user_id = conn.cursor().lastrowid
+                user_id = cursor.lastrowid
                 conn.commit()
 
         session["user_id"] = user_id
         session["user_name"] = user_name
-        return render_template("finscope.html")
+        return redirect("company-info")
     else:
         return 'bad request!', 400
 
-@app.route("/login", methods = ['POST', 'GET'])
+@app.route("/login", methods=['POST', 'GET'])
 def login():
-   if request.method == "GET":
+    if request.method == "GET":
         return render_template("login.html")
-   elif request.method == "POST":
-        email_entered    = request.form.get(email)
-        password_entered = sha256(request.form.get(email).encode('utf-8')).hexdigest()
+    
+    elif request.method == "POST":
+        email_entered = request.form.get("email")
+        password_entered = sha256(request.form.get("password").encode('utf-8')).hexdigest()
         
-        with conn:
-                conn.execute('''
-                    INSERT INTO users (username,email, password_hash)
-                    VALUES (?, ?, ?)
-                    ''', (user_name, user_email, user_password))
-                user_id = conn.cursor().lastrowid
-                conn.commit()
+        with closing(sqlite3.connect('bot_users.db')) as conn:
+            with conn:
+                cursor = conn.cursor()
+                
+                # Ищем пользователя по email
+                cursor.execute('''
+                    SELECT user_id, password_hash FROM users 
+                    WHERE email = ?
+                ''', (email_entered,))
+                
+                user_data = cursor.fetchone()
+                
+                if user_data:
+                    user_id, stored_password = user_data
+                    
+                    # Проверяем пароль
+                    if password_entered == stored_password:
+                        session['user_id'] = user_id  # Сохраняем в сессии
+                        return redirect("/company-info")  # Перенаправляем после успешного входа
+                    else:
+                        return "Неверный пароль", 401
+                else:
+                    return "Пользователь с таким email не найден", 404
+    else:
+        return 'Bad Request', 400
 
-        return render_template("finscope.html")
-   else:
-        return 'bad request!', 400
+@app.route("/company-info")
+def company_info():
+    try:
+        user_id = session["user_id"]            
+    except:
+        return redirect("/login")
+
+    with closing(sqlite3.connect('bot_users.db')) as conn:
+            with conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                                SELECT * FROM users 
+                                WHERE user_id = ?
+                            ''', (user_id,))
+                            
+                user_data = cursor.fetchone()
+
+    username     = user_data[1]
+    email        = user_data[2]
+    dataset_link = user_data[4]
+
+    return render_template("finscope.html", profile_name = username)
 
 if __name__ == '__main__':
     app.run()
