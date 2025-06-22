@@ -4,7 +4,8 @@ from hashlib import sha256
 from contextlib import closing
 from random import randint
 import os
-
+import GetTable
+import pandas as pd
 
 # Подключение к базе данных SQLite для хранения пользователей
 conn = sqlite3.connect('bot_users.db')
@@ -115,6 +116,11 @@ def company_info():
     username     = user_data[1]
     email        = user_data[2]
     dataset_link = user_data[4]
+
+    if os.path.exists(username+".xlsx"):
+        company_data = pd.read_excel(username + ".xlsx")
+    else:
+        company_data = GetTable.export_gsheet_to_excel("1-pI8FLZ1hBfAiKSc7NM847Hw9SyrRLG75FIcXIxYK9Q", username+".xlsx")
 
     return render_template("finscope.html", profile_name = username)
 
