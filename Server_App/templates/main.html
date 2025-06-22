@@ -1,144 +1,228 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BakeryPulse – Главная</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        --bg: linear-gradient(to right, #feb47b, #ff7e5f);
-        --text-primary: #1e293b;
-        --text-muted: #64748b;
-        --accent-gradient: linear-gradient(90deg, #ff7e5f, #feb47b);
-        --button-color: #ffffff;
-        --button-hover: #ffe0d2;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Manrope", sans-serif;
-      }
-      html, body {
-        height: 100%;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text-primary);
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 3rem;
-      }
-      .logo {
-        font-size: 2.2rem;
-        font-weight: 700;
-        background: var(--accent-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: 1px;
-      }
-      .auth-buttons {
-        display: flex;
-        gap: 1rem;
-      }
-      .auth-buttons a {
-        font-size: 1rem;
-        text-decoration: none;
-        color: #ffe3d0;
-        font-weight: 600;
-        background: none;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.5rem;
-        transition: color 0.3s;
-      }
-      .auth-buttons a:hover {
-        color: #fff4ed;
-      }
-      .hero {
-        text-align: center;
-        margin-bottom: 4rem;
-      }
-      .hero h1 {
-        font-size: 3.2rem;
-        margin-bottom: 1.2rem;
-        background: var(--accent-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .hero p {
-        font-size: 1.3rem;
-        color: var(--text-muted);
-      }
-      .grid {
-        display: grid;
-        gap: 2.8rem;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        margin-bottom: 4rem;
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.65);
-        border-radius: 2.2rem;
-        padding: 2.6rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(20px);
-        font-size: 1.2rem;
-      }
-      .card h3 {
-        margin-bottom: 1.2rem;
-        font-size: 1.6rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>InsightGrid</title>
+
+  <!-- Шрифт Manrope -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --grad-start:#feb47b;
+      --grad-end:#ff7e5f;
+      --pill-light:#ffd1ad;
+      --pill-dark:#ff8765;
+      --text-dark:#9a3c26;
+      --radius:2.2rem;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Manrope',sans-serif;}
+
+    /* фон-подложка */
+    body{
+      background:#ffffff;
+      justify-content:center;
+      align-items:center;           /* и по оси Y  */
+      height:100vh;                 /* ВЕСЬ экран */
+      width: 100%;
+      padding:1rem;                 /* небольшой отступ от краёв */
+    }
+
+    /* Hero-блок теперь flex-контейнер и тоже 100% высоты */
+    .hero{
+      width:100%;
+      height:100%;                  /* растягиваем во всю высоту родителя (body) */
+      
+      border-radius:var(--radius);
+      background:linear-gradient(135deg,var(--grad-start),var(--grad-end));
+      padding:4rem 4.5rem 3.5rem;
+
+      display:flex;                 /* внутреннее выравнивание */
+      flex-direction:column;
+      justify-content:center;       /* по вертикали – по центру */
+      position:relative;
+      color:#fff;
+    }
+
+    /* «Пилюли» заголовка */
+    .pill{
+      display:inline-block;
+      padding:1.5rem 2rem;
+      border-radius:9999px;
+      font-weight:400;
+      white-space:nowrap;
+      line-height:1;
+      margin-bottom:1.4rem;
+      letter-spacing:1px;
+    }
+
+    .pill-light{
+      background:var(--pill-light);
+      color:var(--text-dark);
+      font-size:7rem;
+      width: fit-content;       /* по умолчанию — автоширина по тексту */
+      max-width: 100%;          /* не шире блока */
+    }
+    .pill-dark{
+      background:var(--pill-dark);
+      color:#fff;
+      font-size:7rem;
+      margin-bottom:2.6rem;
+      width: fit-content;       /* по умолчанию — автоширина по тексту */
+      max-width: 100%;          /* не шире блока */
+    }
+    .headline {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5rem; /* расстояние между "пилюлей" и текстом */
+      font-size: 7rem;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .plain-text {
+      font-weight: 400;
+      white-space: nowrap;
+      margin-bottom: 3rem;
+    }
+
+    /* кнопки */
+    .btn{
+      display:inline-block;
+      padding:0.9rem 3rem;
+      font-size:1.5rem;
+      border:2px solid #fff;
+      border-radius:3rem;
+      color:#fff;
+      text-decoration:none;
+      transition:all .25s;
+      margin-right:1.2rem;
+    }
+    .btn--filled{
+      background:#fff;
+      color:var(--grad-end);
+      border-color:#fff;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgb(0 0 0 / .12);}
+
+    /* Подпись-описание */
+    .tagline{
+      margin-top:3.5rem;
+      font-size:2rem;
+      line-height:1.6;
+      color:#fff;
+    }
+
+    .features {
+      padding: 4rem 0rem;
+      display: flex;
+      flex-direction: column; /* Один блок в строке */
+      align-items: center;
+      gap: 2rem;
+      background: transparent; /* убираем белый фон */
+      margin-top: -2rem; /* плавный переход от блока hero */
+      font-family:'Manrope',sans-serif;
+      font-weight: 400;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      color: white;
+      padding:4rem 4.5rem 3.5rem;
+      border-radius: 1.5rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      width: 100%;
+      text-align: left;
+      transition: transform 0.3s;
+      font-family:'Manrope',sans-serif;
+      margin-top:1rem;
+      font-size:2rem;
+      line-height:1.6;
+      color:#fff;
+      font-weight: 400;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+    }
+
       footer {
         margin-top: auto;
         text-align: center;
-        color: #ffe3d0;
+        color: #9a3c26;
         font-size: 0.9rem;
+        padding-bottom: 3rem;
+        font-family:'Manrope',sans-serif;
       }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="logo">BakeryPulse</div>
-      <div class="auth-buttons">
-        <a href="login.html">Войти</a>
-        <a href="signup.html">Регистрация</a>
-      </div>
-    </header>
+  </style>
+</head>
 
-    <section class="hero">
-      <h1>Аналитика продаж для пекарен</h1>
-      <p>BakeryPulse помогает пекарням принимать умные решения на основе данных: от прогнозов продаж до контроля затрат.</p>
-    </section>
+<body>
+  <div class="hero">
+    <!-- Заголовок -->
+    <span class="pill pill-light">ДЕЛАЙ ВЗВЕШЕННЫЕ</span><br>
+<div class="headline">
+  <span class="pill pill-dark">РЕШЕНИЯ</span>
+  <span class="plain-text">С INSIGHTGRID</span>
+</div>
 
-    <section class="grid">
-      <div class="card">
-        <h3>Функции</h3>
+    <!-- Кнопки -->
+    <div class="actions">
+      <a href="/login"  class="btn btn--filled">Войти</a>
+      <a href="signup.html" class="btn">Зарегистрироваться</a>
+    </div>
+
+    <!-- Описание -->
+    <p class="tagline">
+      InsightGrid — это платформа, которая помогает малому бизнесу эффективно использовать
+      собственные данные. Мы предлагаем простой способ анализировать продажи,
+      выявлять тенденции и принимать обоснованные решения — без необходимости в
+      глубоких технических знаниях или дорогих решениях.
+    </p>
+  </div><br>
+  
+  <!-- Новый белый блок с цветными дивами -->
+<div class="features">
+    <div class="feature-card">
+        <h3>🔧 Функции</h3>
         <ul style="margin-left:1.2rem; color: var(--text-muted);">
-          <li>📈 Прогноз спроса по дням недели и праздникам</li>
-          <li>💸 Мониторинг цен на ингредиенты</li>
-          <li>📊 Анализ ключевых метрик в реальном времени</li>
-          <li>🧠 Персональные рекомендации на базе ИИ</li>
+          <li>Анализ продаж по времени, дням недели и товарам</li>
+          <li>Выявление пиков и спадов спроса</li>
+          <li>Рекомендации по изменению цен на основе поведения клиентов</li>
+          <li>Визуализация трендов с помощью графиков и тепловых карт</li>
+          <li>Формирование отчётов с предложениями по оптимизации ассортимента и ценообразования</li>
         </ul>
       </div>
-      <div class="card">
-        <h3>Преимущества</h3>
-        <p>Сократите потери, улучшите планирование и увеличьте прибыль с помощью точной аналитики и визуализаций.</p>
+      <div class="feature-card">
+        <h3>⭐️ Преимущества</h3>
+        <ul style="margin-left:1.2rem; color: var(--text-muted);">
+          <li>Простота использования: не требует технической подготовки</li>
+          <li>Работает с обычными Excel-файлами</li>
+          <li>Подходит для кафе, магазинов, пекарен и других малых предприятий</li>
+          <li>Учитывает временные паттерны и сезонность</li>
+          <li>Помогает принимать обоснованные решения на основе данных</li>
+        </ul>
       </div>
-      <div class="card">
-        <h3>Как это работает?</h3>
-        <p>Просто загрузите свои данные или подключите систему учета — и получайте полезные инсайты автоматически.</p>
+      <div class="feature-card">
+        <h3>⚙️ Как это работает</h3>
+        <ul style="margin-left:1.2rem; color: var(--text-muted);">
+          <li>Загрузите файл с историей продаж (в формате Excel или CSV)</li>
+          <li>InsightGrid автоматически анализирует данные, строит графики и выявляет закономерности</li>
+          <li>Вы получите готовые рекомендации по ценообразованию, ассортименту и оптимальному времени продаж</li>
+          <li>При необходимости — экспортируете отчёты или интегрируете в внутренние процессы</li>
+        </ul>
       </div>
-    </section>
-
-    <footer>
-      &copy; 2025 BakeryPulse. Все права защищены.
+</div>
+  <footer>
+      &copy; 2025 InsightGrid. Все права защищены.
     </footer>
-  </body>
+  
+</body>
 </html>
